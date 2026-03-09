@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enterprise Migration Templates — Ashaki Sorrell</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0c0f;
+      --surface: #111418;
+      --surface2: #181c22;
+      --border: #242830;
+      --border2: #2e3440;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --dim: #3d4451;
+      --red: #e84040;
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --teal: #14b8a6;
+      --purple: #a855f7;
+      --critical: #ef4444;
+      --high: #f97316;
+      --medium: #eab308;
+      --low: #22c55e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* GRID BACKGROUND */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(1.5rem, 4vw, 4rem);
+      background: rgba(10,12,15,0.9);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 2rem;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .meta-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      border: 1px solid rgba(59,130,246,0.3);
+      padding: 0.25rem 0.6rem;
+    }
+
+    .header-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+
+    .header-link:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 4rem) 0;
+      overflow: hidden;
+    }
+
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--blue);
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title .accent { color: var(--blue); }
+    .hero-title .dim { color: var(--dim); }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+
+    .hero-stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .layout {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: calc(100vh - 64px);
+    }
+
+    /* ── SIDEBAR NAV ── */
+    .sidenav {
+      border-right: 1px solid var(--border);
+      padding: 2rem 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+
+    .sidenav-section {
+      padding: 0 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .sidenav-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.75rem;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .nav-item:hover { background: var(--surface); }
+
+    .nav-item.active {
+      background: var(--surface2);
+      border-color: var(--border2);
+    }
+
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .nav-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-item.active .nav-text { color: var(--text); }
+    .nav-item:not(.active) .nav-text { color: var(--muted); }
+
+    .nav-count {
+      margin-left: auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--dim);
+      background: var(--surface2);
+      padding: 0.1rem 0.4rem;
+    }
+
+    /* ── CONTENT AREA ── */
+    .content {
+      padding: 2.5rem clamp(1.5rem, 3vw, 3rem);
+      overflow: hidden;
+    }
+
+    .template-panel { display: none; animation: panelIn 0.3s ease; }
+    .template-panel.active { display: block; }
+
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateX(12px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── PANEL HEADER ── */
+    .panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .panel-title-group {}
+
+    .panel-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .panel-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .panel-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.65;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn:hover { border-color: var(--text); color: var(--text); }
+    .btn.primary { background: var(--blue); border-color: var(--blue); color: white; }
+    .btn.primary:hover { background: #2563eb; }
+
+    /* ── DATA TABLE ── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .sheet-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .sheet-tab {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      color: var(--muted);
+      cursor: pointer;
+      border-right: 1px solid var(--border);
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .sheet-tab:hover { color: var(--text); background: var(--surface); }
+    .sheet-tab.active { color: var(--text); background: var(--surface); border-bottom: 2px solid var(--blue); margin-bottom: -1px; }
+
+    .sheet-content { display: none; }
+    .sheet-content.active { display: block; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+
+    thead tr {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border2);
+    }
+
+    th {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      white-space: nowrap;
+      border-right: 1px solid var(--border);
+      font-weight: 400;
+    }
+
+    th:last-child { border-right: none; }
+
+    td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    td:last-child { border-right: none; }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .row-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--dim);
+      text-align: center;
+      width: 36px;
+    }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 1px;
+      white-space: nowrap;
+    }
+
+    .badge-critical { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+    .badge-high { background: rgba(249,115,22,0.15); color: #f97316; border: 1px solid rgba(249,115,22,0.3); }
+    .badge-medium { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
+    .badge-low { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+    .badge-open { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+    .badge-mitigated { background: rgba(20,184,166,0.15); color: #14b8a6; border: 1px solid rgba(20,184,166,0.3); }
+    .badge-monitoring { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+    .badge-r { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); font-weight: 500; }
+    .badge-a { background: rgba(249,115,22,0.2); color: #f97316; border: 1px solid rgba(249,115,22,0.4); font-weight: 500; }
+    .badge-c { background: rgba(59,130,246,0.2); color: #3b82f6; border: 1px solid rgba(59,130,246,0.4); }
+    .badge-i { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
+    .badge-complete { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+    .badge-inprogress { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+    .badge-planned { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
+    .badge-atrisk { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
+    .badge-p1 { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+    .badge-p2 { background: rgba(249,115,22,0.15); color: #f97316; border: 1px solid rgba(249,115,22,0.3); }
+    .badge-p3 { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
+
+    /* ── SCORE BAR ── */
+    .score-cell { display: flex; align-items: center; gap: 0.75rem; }
+    .score-bar-wrap { flex: 1; height: 4px; background: var(--border2); min-width: 60px; }
+    .score-bar { height: 100%; transition: width 0.6s ease; }
+    .score-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 500; min-width: 20px; }
+
+    /* ── GANTT ── */
+    .gantt-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .gantt-header {
+      display: flex;
+      padding: 0.6rem 1rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border2);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .gantt-task-col { width: 220px; flex-shrink: 0; }
+    .gantt-status-col { width: 100px; flex-shrink: 0; }
+    .gantt-weeks { flex: 1; display: grid; grid-template-columns: repeat(20, 1fr); min-width: 400px; }
+    .gantt-week { text-align: center; border-left: 1px solid var(--border); padding: 0 2px; }
+
+    .gantt-row {
+      display: flex;
+      align-items: center;
+      padding: 0.4rem 1rem;
+      border-bottom: 1px solid var(--border);
+      min-height: 36px;
+    }
+
+    .gantt-row:last-child { border-bottom: none; }
+    .gantt-row:hover { background: rgba(255,255,255,0.02); }
+
+    .gantt-row.phase-row {
+      background: var(--surface2);
+      padding: 0.3rem 1rem;
+    }
+
+    .gantt-phase-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      width: 220px;
+      flex-shrink: 0;
+    }
+
+    .gantt-task-name {
+      width: 220px;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      color: var(--text);
+      padding-left: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 1rem;
+    }
+
+    .gantt-status-cell { width: 100px; flex-shrink: 0; }
+
+    .gantt-bars {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      min-width: 400px;
+      height: 20px;
+      gap: 0;
+      position: relative;
+    }
+
+    .gantt-cell { border-left: 1px solid var(--border); height: 20px; }
+
+    .gantt-bar {
+      position: absolute;
+      height: 14px;
+      top: 3px;
+      border-radius: 1px;
+      display: flex;
+      align-items: center;
+      padding: 0 4px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.5rem;
+      color: rgba(255,255,255,0.8);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* ── DASHBOARD CARDS ── */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .dash-card {
+      background: var(--surface);
+      padding: 1.25rem 1.5rem;
+    }
+
+    .dash-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .dash-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .dash-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ── COMMS TIMELINE ── */
+    .comms-timeline { margin-bottom: 1.5rem; }
+
+    .comms-item {
+      display: grid;
+      grid-template-columns: 140px 20px 1fr;
+      gap: 0 1.5rem;
+      padding-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .comms-week {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-align: right;
+      padding-top: 0.15rem;
+    }
+
+    .comms-line {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .comms-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    .comms-connector {
+      flex: 1;
+      width: 1px;
+      background: var(--border2);
+      margin-top: 3px;
+    }
+
+    .comms-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .comms-event {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .comms-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .comms-meta-item { display: flex; align-items: center; gap: 0.3rem; }
+    .comms-meta-item::before { content: '·'; color: var(--dim); }
+    .comms-meta-item:first-child::before { content: ''; }
+
+    /* ── STAKEHOLDER MATRIX ── */
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      height: 360px;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .matrix-quad {
+      background: var(--surface);
+      padding: 1.25rem;
+      position: relative;
+    }
+
+    .matrix-quad-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 0.75rem;
+    }
+
+    .stakeholder-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      padding: 0.2rem 0.6rem;
+      margin: 0.2rem;
+      border: 1px solid var(--border2);
+      background: var(--surface2);
+      color: var(--text);
+      cursor: default;
+      transition: all 0.15s;
+    }
+
+    .stakeholder-chip:hover { border-color: var(--blue); color: var(--blue); }
+
+    .matrix-axis-x {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--dim);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .matrix-axis-y {
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--dim);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 1.5rem clamp(1.5rem, 4vw, 4rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--dim);
+      letter-spacing: 0.08em;
+    }
+
+    footer a { color: var(--blue); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidenav { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 0; display: flex; overflow-x: auto; }
+      .sidenav-section { margin-bottom: 0; padding: 0 0.5rem; display: flex; gap: 0.25rem; }
+      .sidenav-label { display: none; }
+      .gantt-task-col, .gantt-phase-label, .gantt-task-name { width: 140px; font-size: 0.65rem; }
+      .matrix-grid { height: auto; grid-template-columns: 1fr; }
+    }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .layout { animation: fadeIn 0.4s ease; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="brand-icon">AS</div>
+      <div>
+        <div class="brand-name">Enterprise Migration Templates</div>
+        <div class="brand-sub">Ashaki Sorrell · Staff TPM · Fastly</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span class="meta-badge">4 Templates</span>
+      <a href="https://github.com/Ashaki509/EnterprisePlatformMigrations" target="_blank" class="header-link">↗ GitHub</a>
+      <a href="https://www.linkedin.com/in/ashakisorrell/" target="_blank" class="header-link">LinkedIn</a>
+    </div>
+  </div>
+</header>
+
+<div style="position:relative;z-index:1;padding:2.5rem clamp(1.5rem,4vw,4rem) 0;border-bottom:1px solid var(--border)">
+  <div class="hero-eyebrow">Production-Ready Frameworks</div>
+  <h1 class="hero-title">
+    <span class="accent">Platform</span><br/>
+    <span>Migration</span><br/>
+    <span class="dim">Toolkit</span>
+  </h1>
+  <p class="hero-desc">Built from hands-on delivery across $250M+ portfolios. Not generic frameworks — these templates come pre-loaded with real migration risk patterns, RACI structures for 13 roles across 5 phases, and 20-week Gantt timelines.</p>
+  <div class="hero-stats">
+    <div><div class="hero-stat-num">4</div><div class="hero-stat-label">Templates</div></div>
+    <div><div class="hero-stat-num">27</div><div class="hero-stat-label">Milestone Tasks</div></div>
+    <div><div class="hero-stat-num">13</div><div class="hero-stat-label">Roles Mapped</div></div>
+    <div><div class="hero-stat-num">11</div><div class="hero-stat-label">Comms Events</div></div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDENAV -->
+  <nav class="sidenav">
+    <div class="sidenav-section">
+      <div class="sidenav-label">Templates</div>
+      <div class="nav-item active" data-panel="risk" onclick="switchPanel('risk', this)">
+        <div class="nav-dot" style="background:#ef4444"></div>
+        <span class="nav-text">Risk Matrix</span>
+        <span class="nav-count">10 risks</span>
+      </div>
+      <div class="nav-item" data-panel="raci" onclick="switchPanel('raci', this)">
+        <div class="nav-dot" style="background:#3b82f6"></div>
+        <span class="nav-text">RACI Matrix</span>
+        <span class="nav-count">25 tasks</span>
+      </div>
+      <div class="nav-item" data-panel="comms" onclick="switchPanel('comms', this)">
+        <div class="nav-dot" style="background:#22c55e"></div>
+        <span class="nav-text">Comms Plan</span>
+        <span class="nav-count">11 events</span>
+      </div>
+      <div class="nav-item" data-panel="milestone" onclick="switchPanel('milestone', this)">
+        <div class="nav-dot" style="background:#f59e0b"></div>
+        <span class="nav-text">Milestone Tracker</span>
+        <span class="nav-count">20 weeks</span>
+      </div>
+    </div>
+    <div class="sidenav-section">
+      <div class="sidenav-label">Download</div>
+      <div class="nav-item" onclick="window.open('https://github.com/Ashaki509/EnterprisePlatformMigrations/tree/main/templates','_blank')" style="cursor:pointer">
+        <div class="nav-dot" style="background:var(--dim)"></div>
+        <span class="nav-text" style="color:var(--muted)">All .xlsx files ↗</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ══ RISK MATRIX ══ -->
+    <div id="panel-risk" class="template-panel active">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <div class="panel-eyebrow" style="color:#ef4444">🔴 risk-assessment-matrix.xlsx</div>
+          <div class="panel-title">Risk Assessment Matrix</div>
+          <p class="panel-desc">Probability × Impact scoring for identifying and prioritizing migration risks. 5×5 heat map with auto-calculated scores and mitigation strategies.</p>
+        </div>
+        <div class="panel-actions">
+          <a href="https://github.com/Ashaki509/EnterprisePlatformMigrations/blob/main/templates/risk-assessment-matrix.xlsx" target="_blank" class="btn primary">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="dash-card"><div class="dash-label">Total Risks</div><div class="dash-value" style="color:var(--text)">10</div><div class="dash-sub">Pre-populated entries</div></div>
+        <div class="dash-card"><div class="dash-label">Critical</div><div class="dash-value" style="color:#ef4444">3</div><div class="dash-sub">Score ≥ 16</div></div>
+        <div class="dash-card"><div class="dash-label">High</div><div class="dash-value" style="color:#f97316">4</div><div class="dash-sub">Score 9–15</div></div>
+        <div class="dash-card"><div class="dash-label">Medium / Low</div><div class="dash-value" style="color:#eab308">3</div><div class="dash-sub">Score ≤ 8</div></div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="sheet-tabs">
+          <div class="sheet-tab active" onclick="switchTab(this, 'risk-main')">Risk Register</div>
+          <div class="sheet-tab" onclick="switchTab(this, 'risk-heatmap')">Heat Map Legend</div>
+        </div>
+        <div id="risk-main" class="sheet-content active">
+          <table>
+            <thead>
+              <tr>
+                <th class="row-num">#</th>
+                <th>Risk Description</th>
+                <th>Category</th>
+                <th>Probability</th>
+                <th>Impact</th>
+                <th>Score</th>
+                <th>Rating</th>
+                <th>Mitigation Strategy</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="row-num">1</td><td>Data loss during cutover migration window</td><td>Technical</td><td>3</td><td>5</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:75%;background:#ef4444"></div></div><span class="score-val" style="color:#ef4444">15</span></div></td><td><span class="badge badge-critical">Critical</span></td><td>Full backup 24h pre-migration; rollback runbook tested</td><td><span class="badge badge-open">Open</span></td></tr>
+              <tr><td class="row-num">2</td><td>Key SME unavailability during critical phases</td><td>Resource</td><td>4</td><td>4</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:80%;background:#ef4444"></div></div><span class="score-val" style="color:#ef4444">16</span></div></td><td><span class="badge badge-critical">Critical</span></td><td>Cross-train 2 backups per SME; document all runbooks</td><td><span class="badge badge-open">Open</span></td></tr>
+              <tr><td class="row-num">3</td><td>Regulatory compliance gap discovered post-go-live</td><td>Compliance</td><td>2</td><td>5</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:80%;background:#ef4444"></div></div><span class="score-val" style="color:#ef4444">20</span></div></td><td><span class="badge badge-critical">Critical</span></td><td>Pre-migration compliance audit; legal sign-off gate</td><td><span class="badge badge-monitoring">Monitoring</span></td></tr>
+              <tr><td class="row-num">4</td><td>Third-party API integration failures post-migration</td><td>Technical</td><td>3</td><td>4</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:60%;background:#f97316"></div></div><span class="score-val" style="color:#f97316">12</span></div></td><td><span class="badge badge-high">High</span></td><td>Integration testing in staging; vendor SLA agreements</td><td><span class="badge badge-open">Open</span></td></tr>
+              <tr><td class="row-num">5</td><td>Network latency exceeding SLA thresholds</td><td>Infrastructure</td><td>3</td><td>3</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:45%;background:#f97316"></div></div><span class="score-val" style="color:#f97316">9</span></div></td><td><span class="badge badge-high">High</span></td><td>Load test at 1.5× peak; CDN and routing optimizations</td><td><span class="badge badge-mitigated">Mitigated</span></td></tr>
+              <tr><td class="row-num">6</td><td>End-user adoption resistance</td><td>Change Mgmt</td><td>4</td><td>3</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:60%;background:#f97316"></div></div><span class="score-val" style="color:#f97316">12</span></div></td><td><span class="badge badge-high">High</span></td><td>Champions program; training 4 weeks pre-launch</td><td><span class="badge badge-open">Open</span></td></tr>
+              <tr><td class="row-num">7</td><td>Scope creep from late stakeholder requirements</td><td>Governance</td><td>4</td><td>3</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:60%;background:#f97316"></div></div><span class="score-val" style="color:#f97316">12</span></div></td><td><span class="badge badge-high">High</span></td><td>Change control board; frozen scope gates per phase</td><td><span class="badge badge-monitoring">Monitoring</span></td></tr>
+              <tr><td class="row-num">8</td><td>Cloud cost overrun vs. CapEx budget</td><td>Financial</td><td>3</td><td>2</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:30%;background:#eab308"></div></div><span class="score-val" style="color:#eab308">6</span></div></td><td><span class="badge badge-medium">Medium</span></td><td>FinOps review monthly; tagging policy enforced</td><td><span class="badge badge-mitigated">Mitigated</span></td></tr>
+              <tr><td class="row-num">9</td><td>Legacy data format incompatibility</td><td>Technical</td><td>2</td><td>3</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:30%;background:#eab308"></div></div><span class="score-val" style="color:#eab308">6</span></div></td><td><span class="badge badge-medium">Medium</span></td><td>ETL mapping documented; data quality validation scripts</td><td><span class="badge badge-mitigated">Mitigated</span></td></tr>
+              <tr><td class="row-num">10</td><td>Vendor support delays during stabilization</td><td>Vendor</td><td>2</td><td>2</td><td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:16%;background:#22c55e"></div></div><span class="score-val" style="color:#22c55e">4</span></div></td><td><span class="badge badge-low">Low</span></td><td>Escalation path defined; premium support SLA in contract</td><td><span class="badge badge-monitoring">Monitoring</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="risk-heatmap" class="sheet-content">
+          <div style="padding:2rem">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);margin-bottom:1.5rem;letter-spacing:0.08em">PROBABILITY (1=Rare → 5=Almost Certain) × IMPACT (1=Negligible → 5=Catastrophic)</div>
+            <table style="width:auto">
+              <thead>
+                <tr>
+                  <th style="width:80px">P \ I</th>
+                  <th style="width:70px;text-align:center">1</th>
+                  <th style="width:70px;text-align:center">2</th>
+                  <th style="width:70px;text-align:center">3</th>
+                  <th style="width:70px;text-align:center">4</th>
+                  <th style="width:70px;text-align:center">5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted)">5</td>
+                  <td style="text-align:center;background:rgba(234,179,8,0.15)"><span class="badge badge-medium">5</span></td>
+                  <td style="text-align:center;background:rgba(249,115,22,0.15)"><span class="badge badge-high">10</span></td>
+                  <td style="text-align:center;background:rgba(249,115,22,0.15)"><span class="badge badge-high">15</span></td>
+                  <td style="text-align:center;background:rgba(239,68,68,0.2)"><span class="badge badge-critical">20</span></td>
+                  <td style="text-align:center;background:rgba(239,68,68,0.2)"><span class="badge badge-critical">25</span></td>
+                </tr>
+                <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted)">4</td>
+                  <td style="text-align:center;background:rgba(34,197,94,0.1)"><span class="badge badge-low">4</span></td>
+                  <td style="text-align:center;background:rgba(234,179,8,0.15)"><span class="badge badge-medium">8</span></td>
+                  <td style="text-align:center;background:rgba(249,115,22,0.15)"><span class="badge badge-high">12</span></td>
+                  <td style="text-align:center;background:rgba(239,68,68,0.2)"><span class="badge badge-critical">16</span></td>
+                  <td style="text-align:center;background:rgba(239,68,68,0.2)"><span class="badge badge-critical">20</span></td>
+                </tr>
+                <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted)">3</td>
+                  <td style="text-align:center;background:rgba(34,197,94,0.1)"><span class="badge badge-low">3</span></td>
+                  <td style="text-align:center;background:rgba(34,197,94,0.1)"><span class="badge badge-low">6</span></td>
+                  <td style="text-align:center;background:rgba(234,179,8,0.15)"><span class="badge badge-medium">9</span></td>
+                  <td style="text-align:center;background:rgba(249,115,22,0.15)"><span class="badge badge-high">12</span></td>
+                  <td style="text-align:center;background:rgba(249,115,22,0.15)"><span class="badge badge-high">15</span></td>
+                </tr>
+                <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted)">2</td>
+                  <td style="text-align:center"><span class="badge badge-low">2</span></td>
+                  <td style="text-align:center"><span class="badge badge-low">4</span></td>
+                  <td style="text-align:center;background:rgba(34,197,94,0.1)"><span class="badge badge-low">6</span></td>
+                  <td style="text-align:center;background:rgba(234,179,8,0.15)"><span class="badge badge-medium">8</span></td>
+                  <td style="text-align:center;background:rgba(249,115,22,0.15)"><span class="badge badge-high">10</span></td>
+                </tr>
+                <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted)">1</td>
+                  <td style="text-align:center"><span class="badge badge-low">1</span></td>
+                  <td style="text-align:center"><span class="badge badge-low">2</span></td>
+                  <td style="text-align:center"><span class="badge badge-low">3</span></td>
+                  <td style="text-align:center"><span class="badge badge-low">4</span></td>
+                  <td style="text-align:center;background:rgba(234,179,8,0.15)"><span class="badge badge-medium">5</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RACI ══ -->
+    <div id="panel-raci" class="template-panel">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <div class="panel-eyebrow" style="color:#3b82f6">🔵 raci-migration-template.xlsx</div>
+          <div class="panel-title">RACI Migration Matrix</div>
+          <p class="panel-desc">25 activities mapped across all 5 migration phases. 13 roles from Executive Sponsor through End User Rep with color-coded R/A/C/I cells.</p>
+        </div>
+        <div class="panel-actions">
+          <a href="https://github.com/Ashaki509/EnterprisePlatformMigrations/blob/main/templates/raci-migration-template.xlsx" target="_blank" class="btn primary">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><div style="width:18px;height:10px;background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.4);border-radius:1px"></div> R – Responsible (does the work)</div>
+        <div class="legend-item"><div style="width:18px;height:10px;background:rgba(249,115,22,0.2);border:1px solid rgba(249,115,22,0.4);border-radius:1px"></div> A – Accountable (signs off)</div>
+        <div class="legend-item"><div style="width:18px;height:10px;background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.4);border-radius:1px"></div> C – Consulted (provides input)</div>
+        <div class="legend-item"><div style="width:18px;height:10px;background:rgba(107,114,128,0.15);border:1px solid rgba(107,114,128,0.3);border-radius:1px"></div> I – Informed (kept in loop)</div>
+      </div>
+
+      <div class="table-wrap" style="overflow-x:auto">
+        <table style="min-width:1100px">
+          <thead>
+            <tr>
+              <th style="min-width:160px">Activity</th>
+              <th style="min-width:60px">Phase</th>
+              <th>Exec Sponsor</th>
+              <th>Program Mgr</th>
+              <th>TPM</th>
+              <th>Arch Lead</th>
+              <th>Infra Lead</th>
+              <th>Security</th>
+              <th>Dev Lead</th>
+              <th>QA Lead</th>
+              <th>Change Mgmt</th>
+              <th>PMO</th>
+              <th>Legal</th>
+              <th>FinOps</th>
+              <th>End User</th>
+            </tr>
+          </thead>
+          <tbody id="raci-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ COMMS ══ -->
+    <div id="panel-comms" class="template-panel">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <div class="panel-eyebrow" style="color:#22c55e">🟢 stakeholder-communication-plan.xlsx</div>
+          <div class="panel-title">Stakeholder Communication Plan</div>
+          <p class="panel-desc">End-to-end communication framework. 11 events from kick-off through executive close-out, with trigger timing, owner, channel, and success metric.</p>
+        </div>
+        <div class="panel-actions">
+          <a href="https://github.com/Ashaki509/EnterprisePlatformMigrations/blob/main/templates/stakeholder-communication-plan.xlsx" target="_blank" class="btn primary">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="sheet-tabs" style="border:1px solid var(--border);border-bottom:none;margin-bottom:0">
+        <div class="sheet-tab active" onclick="switchTab(this,'comms-timeline-view')">Timeline View</div>
+        <div class="sheet-tab" onclick="switchTab(this,'comms-stakeholders')">Stakeholder Register</div>
+      </div>
+
+      <div class="table-wrap" style="border-top:none">
+        <div id="comms-timeline-view" class="sheet-content active" style="padding:2rem">
+          <div class="comms-timeline" id="comms-list"></div>
+        </div>
+        <div id="comms-stakeholders" class="sheet-content">
+          <div style="padding:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--border)">Influence × Interest Matrix</div>
+          <div style="padding:1.5rem;position:relative">
+            <div class="matrix-grid">
+              <div class="matrix-quad" style="border-bottom:1px solid var(--border2)">
+                <div class="matrix-quad-label">Low Influence · High Interest — Keep Informed</div>
+                <span class="stakeholder-chip">📋 End User Reps</span>
+                <span class="stakeholder-chip">👥 Dept Managers</span>
+              </div>
+              <div class="matrix-quad" style="border-left:1px solid var(--border2);border-bottom:1px solid var(--border2)">
+                <div class="matrix-quad-label">High Influence · High Interest — Manage Closely</div>
+                <span class="stakeholder-chip">⭐ Exec Sponsor</span>
+                <span class="stakeholder-chip">📊 Program Mgr</span>
+                <span class="stakeholder-chip">🔐 Security Lead</span>
+                <span class="stakeholder-chip">⚖️ Legal / Compliance</span>
+              </div>
+              <div class="matrix-quad">
+                <div class="matrix-quad-label">Low Influence · Low Interest — Monitor</div>
+                <span class="stakeholder-chip">📰 External Comms</span>
+                <span class="stakeholder-chip">🤝 Vendors</span>
+              </div>
+              <div class="matrix-quad" style="border-left:1px solid var(--border2)">
+                <div class="matrix-quad-label">High Influence · Low Interest — Keep Satisfied</div>
+                <span class="stakeholder-chip">💰 FinOps</span>
+                <span class="stakeholder-chip">🏗️ Infra Lead</span>
+                <span class="stakeholder-chip">🧪 QA Lead</span>
+                <span class="stakeholder-chip">🔄 Change Mgmt</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MILESTONE ══ -->
+    <div id="panel-milestone" class="template-panel">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <div class="panel-eyebrow" style="color:#f59e0b">🟠 milestone-tracker.xlsx</div>
+          <div class="panel-title">Milestone Tracker</div>
+          <p class="panel-desc">20-week Gantt-style timeline with live summary dashboard. 27 tasks across 5 phases. Structured for direct import into Jira or Smartsheet.</p>
+        </div>
+        <div class="panel-actions">
+          <a href="https://github.com/Ashaki509/EnterprisePlatformMigrations/blob/main/templates/milestone-tracker.xlsx" target="_blank" class="btn primary">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="dash-card"><div class="dash-label">On Track</div><div class="dash-value" style="color:#22c55e">12</div><div class="dash-sub">tasks</div></div>
+        <div class="dash-card"><div class="dash-label">In Progress</div><div class="dash-value" style="color:#3b82f6">8</div><div class="dash-sub">tasks</div></div>
+        <div class="dash-card"><div class="dash-label">At Risk</div><div class="dash-value" style="color:#eab308">5</div><div class="dash-sub">tasks</div></div>
+        <div class="dash-card"><div class="dash-label">Complete</div><div class="dash-value" style="color:#14b8a6">2</div><div class="dash-sub">tasks</div></div>
+        <div class="dash-card"><div class="dash-label">% Done</div><div class="dash-value" style="color:var(--text)">37<span style="font-size:1.2rem">%</span></div><div class="dash-sub">overall</div></div>
+      </div>
+
+      <div class="gantt-wrap" id="gantt-container"></div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<footer>
+  <span>© 2026 Ashaki Sorrell · <a href="https://github.com/Ashaki509/EnterprisePlatformMigrations" target="_blank">EnterprisePlatformMigrations</a></span>
+  <span>Staff TPM · Director Level · Fastly, Inc.</span>
+  <span><a href="https://www.linkedin.com/in/ashakisorrell/" target="_blank">LinkedIn ↗</a></span>
+</footer>
+
+<script>
+// ── Panel switching ──
+function switchPanel(id, el) {
+  document.querySelectorAll('.template-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+function switchTab(el, contentId) {
+  const wrap = el.closest('.table-wrap') || el.closest('.sheet-tabs').nextElementSibling?.closest('.table-wrap') || el.parentElement.parentElement;
+  // Find all sibling tabs
+  el.parentElement.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  // Find content divs in same parent context
+  const allContent = document.querySelectorAll(`#${contentId}`)[0]?.parentElement?.querySelectorAll('.sheet-content');
+  if (allContent) allContent.forEach(c => c.classList.remove('active'));
+  const target = document.getElementById(contentId);
+  if (target) target.classList.add('active');
+}
+
+// ── RACI Data ──
+const raciData = [
+  // [Activity, Phase, ExecSponsor, ProgramMgr, TPM, ArchLead, InfraLead, Security, DevLead, QALead, ChangeMgmt, PMO, Legal, FinOps, EndUser]
+  ['Business case & approval','Discovery','A','R','C','C','','','','','','I','C','C',''],
+  ['Current state assessment','Discovery','I','A','R','R','R','C','C','','','','','','C'],
+  ['Risk identification','Discovery','I','A','R','R','R','R','C','C','','R','C','C',''],
+  ['Vendor evaluation','Discovery','C','A','R','R','C','C','','','','','C','C',''],
+  ['Scope definition','Discovery','A','R','R','R','','C','C','','C','I','C','','C'],
+  ['Migration architecture design','Planning','I','C','A','R','R','R','C','','','','','',''],
+  ['Resource & capacity plan','Planning','C','A','R','','C','','C','C','C','R','','C',''],
+  ['Communication plan','Planning','I','A','C','','','','','','R','R','','','C'],
+  ['Training plan','Planning','I','C','A','','','','','','R','C','','','R'],
+  ['Rollback runbook','Planning','','C','A','R','R','R','R','C','','','','',''],
+  ['Environment provisioning','Pilot','','C','A','C','R','R','R','','','','','C',''],
+  ['Data migration — test subset','Pilot','','C','A','R','R','C','R','R','','','','',''],
+  ['Integration testing','Pilot','','C','A','R','C','R','R','R','','','','',''],
+  ['Performance baseline','Pilot','','C','A','R','R','C','R','R','','','','',''],
+  ['Pilot review & sign-off','Pilot','A','R','R','R','R','R','R','R','','R','','',''],
+  ['User acceptance testing','Execution','C','A','R','','','C','R','R','C','','','','R'],
+  ['Cutover execution','Execution','I','C','A','R','R','R','R','R','','','','',''],
+  ['Go-live monitoring','Execution','I','C','A','C','R','R','R','R','','','',''],
+  ['Stakeholder notifications','Execution','I','R','A','','','','','','R','C','','',''],
+  ['Incident response','Execution','','C','A','R','R','R','R','R','','','','',''],
+  ['Hypercare support','Stabilization','','C','A','C','R','C','R','R','','','','','R'],
+  ['Performance optimization','Stabilization','','C','A','R','R','C','R','','','','','C',''],
+  ['Lessons learned','Stabilization','C','A','R','C','C','C','C','C','C','R','','','C'],
+  ['Final compliance audit','Stabilization','A','C','R','','','R','','C','','','R','',''],
+  ['Program close-out','Stabilization','A','R','R','C','','','','','C','R','C','R',''],
+];
+
+const phaseCols = {
+  'Discovery': '#3b82f6',
+  'Planning': '#a855f7',
+  'Pilot': '#f59e0b',
+  'Execution': '#ef4444',
+  'Stabilization': '#22c55e'
+};
+
+function raciCell(v) {
+  if (!v) return '<td></td>';
+  const cls = {R:'badge-r',A:'badge-a',C:'badge-c',I:'badge-i'}[v] || '';
+  return `<td style="text-align:center"><span class="badge ${cls}">${v}</span></td>`;
+}
+
+const tbody = document.getElementById('raci-body');
+let lastPhase = '';
+raciData.forEach(row => {
+  const [act, phase, ...roles] = row;
+  if (phase !== lastPhase) {
+    const color = phaseCols[phase];
+    tbody.innerHTML += `<tr style="background:var(--surface2)"><td colspan="15" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:${color};padding:0.5rem 1rem;border-bottom:1px solid var(--border2)">── Phase ${Object.keys(phaseCols).indexOf(phase)+1}: ${phase}</td></tr>`;
+    lastPhase = phase;
+  }
+  const phaseBadge = `<span class="badge" style="background:${phaseCols[phase]}22;color:${phaseCols[phase]};border:1px solid ${phaseCols[phase]}44;font-size:0.52rem">${phase.slice(0,4)}</span>`;
+  tbody.innerHTML += `<tr><td style="font-size:0.78rem">${act}</td><td>${phaseBadge}</td>${roles.map(raciCell).join('')}</tr>`;
+});
+
+// ── Comms Data ──
+const commsData = [
+  { week:'Week 0', event:'Program Kick-Off Meeting', owner:'Program Mgr', channel:'All-hands video', format:'Slide deck + Q&A', trigger:'Project start', color:'#3b82f6', audiences:'All stakeholders' },
+  { week:'Week 1', event:'Exec Steering Committee #1', owner:'Exec Sponsor', channel:'Exec meeting', format:'1-page brief', trigger:'Week 1', color:'#a855f7', audiences:'C-Suite, Exec Sponsor' },
+  { week:'Week 2', event:'Stakeholder Discovery Interviews', owner:'TPM', channel:'1:1 meetings', format:'Interview guide', trigger:'Scope definition', color:'#14b8a6', audiences:'Dept heads, SMEs' },
+  { week:'Week 4', event:'Risk Register Review', owner:'TPM / PMO', channel:'Risk committee', format:'Risk matrix', trigger:'First risk pass', color:'#ef4444', audiences:'Program team, Security' },
+  { week:'Week 6', event:'Architecture Design Review', owner:'Arch Lead', channel:'Technical review', format:'Design doc', trigger:'Architecture complete', color:'#f59e0b', audiences:'Engineering, Security' },
+  { week:'Week 8', event:'Mid-Program Status Report', owner:'Program Mgr', channel:'Email + Confluence', format:'Status report', trigger:'Bi-weekly', color:'#22c55e', audiences:'All stakeholders' },
+  { week:'Week 10', event:'Pilot Results Readout', owner:'TPM', channel:'Program meeting', format:'Results deck', trigger:'Pilot complete', color:'#f59e0b', audiences:'Program team, Execs' },
+  { week:'Week 12', event:'Go/No-Go Decision Meeting', owner:'Exec Sponsor', channel:'Executive meeting', format:'Decision brief', trigger:'Pre-go-live gate', color:'#ef4444', audiences:'Execs, Legal, Security' },
+  { week:'Week 14', event:'Go-Live Announcement', owner:'Change Mgmt', channel:'Email + Slack + Intranet', format:'Announcement', trigger:'Go-live day', color:'#22c55e', audiences:'All users & stakeholders' },
+  { week:'Week 16', event:'Hypercare Weekly Stand-up', owner:'TPM', channel:'Video call', format:'Stand-up notes', trigger:'Weekly post-go-live', color:'#14b8a6', audiences:'Support, Eng, PM team' },
+  { week:'Week 20', event:'Executive Program Close-Out', owner:'Program Mgr', channel:'Exec presentation', format:'Lessons learned deck', trigger:'Stabilization complete', color:'#a855f7', audiences:'All stakeholders' },
+];
+
+const commsList = document.getElementById('comms-list');
+commsData.forEach(c => {
+  commsList.innerHTML += `
+    <div class="comms-item">
+      <div class="comms-week">${c.week}</div>
+      <div class="comms-line">
+        <div class="comms-dot" style="border-color:${c.color};background:${c.color}33"></div>
+        <div class="comms-connector"></div>
+      </div>
+      <div class="comms-card">
+        <div class="comms-event">${c.event}</div>
+        <div class="comms-meta">
+          <div class="comms-meta-item">👤 ${c.owner}</div>
+          <div class="comms-meta-item">📡 ${c.channel}</div>
+          <div class="comms-meta-item">📄 ${c.format}</div>
+          <div class="comms-meta-item">👥 ${c.audiences}</div>
+        </div>
+      </div>
+    </div>`;
+});
+
+// ── Gantt Data ──
+const ganttData = [
+  { phase:'Phase 1: Discovery', tasks:[] },
+  { phase:null, task:'Stakeholder interviews', start:1, dur:2, status:'complete', priority:'P1' },
+  { phase:null, task:'Current state documentation', start:1, dur:3, status:'complete', priority:'P1' },
+  { phase:null, task:'Risk identification workshop', start:2, dur:2, status:'inprogress', priority:'P1' },
+  { phase:null, task:'Vendor evaluation', start:2, dur:3, status:'inprogress', priority:'P2' },
+  { phase:null, task:'Business case sign-off', start:4, dur:1, status:'planned', priority:'P1' },
+  { phase:'Phase 2: Planning', tasks:[] },
+  { phase:null, task:'Architecture design', start:5, dur:3, status:'inprogress', priority:'P1' },
+  { phase:null, task:'Resource & staffing plan', start:5, dur:2, status:'atrisk', priority:'P2' },
+  { phase:null, task:'Communication plan', start:6, dur:2, status:'planned', priority:'P2' },
+  { phase:null, task:'Training curriculum', start:6, dur:3, status:'planned', priority:'P3' },
+  { phase:null, task:'Rollback runbook', start:7, dur:2, status:'atrisk', priority:'P1' },
+  { phase:'Phase 3: Pilot', tasks:[] },
+  { phase:null, task:'Env provisioning', start:9, dur:2, status:'planned', priority:'P1' },
+  { phase:null, task:'Pilot data migration', start:10, dur:2, status:'planned', priority:'P1' },
+  { phase:null, task:'Integration testing', start:11, dur:2, status:'planned', priority:'P1' },
+  { phase:null, task:'Performance baseline', start:11, dur:2, status:'planned', priority:'P2' },
+  { phase:null, task:'Pilot sign-off', start:13, dur:1, status:'planned', priority:'P1' },
+  { phase:'Phase 4: Execution', tasks:[] },
+  { phase:null, task:'UAT', start:13, dur:2, status:'planned', priority:'P1' },
+  { phase:null, task:'Final cutover prep', start:14, dur:1, status:'atrisk', priority:'P1' },
+  { phase:null, task:'Cutover execution', start:15, dur:1, status:'planned', priority:'P1' },
+  { phase:null, task:'Go-live monitoring', start:15, dur:2, status:'planned', priority:'P1' },
+  { phase:null, task:'Stakeholder notification', start:15, dur:1, status:'planned', priority:'P2' },
+  { phase:'Phase 5: Stabilization', tasks:[] },
+  { phase:null, task:'Hypercare support', start:16, dur:3, status:'planned', priority:'P1' },
+  { phase:null, task:'Performance optimization', start:17, dur:2, status:'planned', priority:'P2' },
+  { phase:null, task:'Lessons learned', start:19, dur:1, status:'planned', priority:'P3' },
+  { phase:null, task:'Program close-out', start:20, dur:1, status:'planned', priority:'P2' },
+];
+
+const phaseColors = { 'Phase 1: Discovery':'#3b82f6','Phase 2: Planning':'#a855f7','Phase 3: Pilot':'#f59e0b','Phase 4: Execution':'#ef4444','Phase 5: Stabilization':'#22c55e' };
+const statusColors = { complete:'#14b8a6', inprogress:'#3b82f6', atrisk:'#eab308', planned:'#4b5563' };
+
+const ganttContainer = document.getElementById('gantt-container');
+let ganttHTML = `<div class="gantt-header">
+  <div class="gantt-task-col">Task</div>
+  <div class="gantt-status-col">Status</div>
+  <div class="gantt-weeks">`;
+for (let w=1;w<=20;w++) ganttHTML += `<div class="gantt-week">W${w}</div>`;
+ganttHTML += `</div></div>`;
+
+let currentColor = '#3b82f6';
+ganttData.forEach(item => {
+  if (item.phase) {
+    currentColor = phaseColors[item.phase] || '#3b82f6';
+    ganttHTML += `<div class="gantt-row phase-row">
+      <div class="gantt-phase-label" style="color:${currentColor}">${item.phase}</div>
+      <div class="gantt-status-cell"></div>
+      <div class="gantt-bars">${Array(20).fill('<div class="gantt-cell"></div>').join('')}</div>
+    </div>`;
+  } else {
+    const statusBadge = {complete:'badge-complete',inprogress:'badge-inprogress',planned:'badge-planned',atrisk:'badge-atrisk'}[item.status];
+    const priorityBadge = {P1:'badge-p1',P2:'badge-p2',P3:'badge-p3'}[item.priority];
+    const barLeft = ((item.start - 1) / 20 * 100).toFixed(1);
+    const barWidth = (item.dur / 20 * 100).toFixed(1);
+    const barColor = statusColors[item.status];
+    let cells = '';
+    for (let w=1;w<=20;w++) cells += '<div class="gantt-cell"></div>';
+    ganttHTML += `<div class="gantt-row">
+      <div class="gantt-task-name" title="${item.task}">${item.task}</div>
+      <div class="gantt-status-cell"><span class="badge ${statusBadge}" style="font-size:0.52rem">${item.status.replace('inprogress','in prog')}</span></div>
+      <div class="gantt-bars" style="position:relative">
+        ${cells}
+        <div class="gantt-bar" style="left:${barLeft}%;width:calc(${barWidth}% - 2px);background:${barColor}cc;border:1px solid ${barColor}">${item.dur > 1 ? item.task.split(' ')[0] : ''}</div>
+      </div>
+    </div>`;
+  }
+});
+
+ganttContainer.innerHTML = ganttHTML;
+</script>
+
+</body>
+</html>
