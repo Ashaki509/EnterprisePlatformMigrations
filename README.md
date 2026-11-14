@@ -15,6 +15,7 @@ This repo contains frameworks and tools I've used to successfully lead multi-mil
 ## 📂 Repository Structure
 
 - **README.md** — This overview
+- **playbooks/** — Step-by-step guides for running a migration
 - **templates/** — Ready-to-use migration templates
 
 ---
@@ -22,18 +23,20 @@ This repo contains frameworks and tools I've used to successfully lead multi-mil
 ## 🎯 What You'll Find
 
 ### Migration Playbooks
-- End-to-end migration lifecycle
-- Risk management and mitigation strategies
-- Stakeholder alignment and communication plans
-- Rollback and contingency planning
+- [End-to-end migration lifecycle](playbooks/migration-lifecycle.md)
+- [Rollback and contingency planning](playbooks/rollback-and-contingency-planning.md)
+- Risk management and mitigation strategies: see the [Risk Assessment Matrix](templates/risk-assessment-matrix.xlsx)
+- Stakeholder alignment and communication plans: see the [Stakeholder Communication Plan](templates/stakeholder-communication-plan.xlsx)
 
 ### Key Templates (in `/templates`)
-- Migration Charter
-- Benefits Register
-- Risk & Issue Log
-- RACI Matrix
-- Cutover Plan
-- Lessons Learned Log
+- [Migration Charter](templates/migration-charter.md)
+- [Benefits Register](templates/benefits-register.md)
+- [Risk Assessment Matrix](templates/risk-assessment-matrix.xlsx)
+- [RACI Matrix](templates/raci-migration-template.xlsx)
+- [Stakeholder Communication Plan](templates/stakeholder-communication-plan.xlsx)
+- [Milestone Tracker](templates/milestone-tracker.xlsx)
+- [Cutover Plan](templates/cutover-plan.md)
+- [Lessons Learned Log](templates/lessons-learned-log.md)
 
 ---
 

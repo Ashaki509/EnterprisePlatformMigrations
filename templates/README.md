@@ -41,6 +41,16 @@ End-to-end communication framework for keeping stakeholders aligned throughout t
 
 ---
 
+### 📝 Markdown Templates
+
+Fill-in documents you can copy into your own wiki or repository.
+- [migration-charter.md](migration-charter.md): business case, scope, roles, budget, and sponsor approval
+- [benefits-register.md](benefits-register.md): expected benefits with baselines, targets, owners, and status
+- [cutover-plan.md](cutover-plan.md): go or no-go checklist, runbook, validation criteria, and communications
+- [lessons-learned-log.md](lessons-learned-log.md): a running log with actions, plus a session format
+
+---
+
 ## 🚀 How to Use
 
 1. Download the template(s) relevant to your current phase
