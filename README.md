@@ -57,7 +57,7 @@ This repo contains frameworks and tools I've used to successfully lead multi-mil
 
 ## 📬 Connect
 
-**Ashaki Sorrell** — Staff Technical Program Manager
+**Ashaki Sorrell** | Strategy & Operations Leader
 
 - 📧 ashaki509@gmail.com
 - 💼 [LinkedIn](https://linkedin.com/in/ashakisorrell)
